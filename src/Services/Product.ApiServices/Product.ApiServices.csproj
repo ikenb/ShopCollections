@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Products\Product.API\Product.API.csproj" />
+    <ProjectReference Include="..\..\API\Product.API\Product.API.csproj" />
   </ItemGroup>
 
 </Project>
