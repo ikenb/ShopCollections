@@ -1,9 +1,6 @@
-﻿using IdentityModel;
-using IdentityServer4;
+﻿using IdentityServer4;
 using IdentityServer4.Models;
-using IdentityServer4.Test;
 using System.Collections.Generic;
-using System.Security.Claims;
 
 namespace IdentityServer
 {
@@ -22,6 +19,7 @@ namespace IdentityServer
                             new Secret("secret".Sha256())
                         },
                         AllowedScopes = { "productAPI" }
+
                    },
                    new Client
                    {
@@ -32,11 +30,11 @@ namespace IdentityServer
                        AllowRememberConsent = false,
                        RedirectUris = new List<string>()
                        {
-                           "http://localhost:5000/signin-oidc"
+                           "http://localhost:5020/signin-oidc"
                        },
                        PostLogoutRedirectUris = new List<string>()
                        {
-                           "http://localhost:5000/signout-callback-oidc"
+                           "http://localhost:5020/signout-callback-oidc"
                        },
                        ClientSecrets = new List<Secret>
                        {
@@ -73,20 +71,6 @@ namespace IdentityServer
                     new List<string>() { "role" })
           };
 
-        public static List<TestUser> TestUsers =>
-            new List<TestUser>
-            {
-                new TestUser
-                {
-                    SubjectId = "5BE86359-073C-434B-AD2D-A3932222DABE",
-                    Username = "tshepiso",
-                    Password = "marape",
-                    Claims = new List<Claim>
-                    {
-                        new Claim(JwtClaimTypes.GivenName, "tshepiso"),
-                        new Claim(JwtClaimTypes.FamilyName, "magician")
-                    }
-                }
-            };
+
     }
 }
