@@ -1,26 +1,36 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Product.ApiServices.Interfaces;
+using Product.API.Models;
+using Products.Client.Interfaces.IRepository;
 using System.Threading.Tasks;
 
 namespace Products.Client.Controllers
 {
+    [Authorize]
     public class PiesController : Controller
     {
-        private readonly IPieApiService _pieApiServices;
+        private readonly IPieRepository _pieRepository;
 
 
 
-        public PiesController(IPieApiService pieApiServices)
+        public PiesController(IPieRepository pieRepository)
         {
-            _pieApiServices = pieApiServices;
+            _pieRepository = pieRepository;
         }
 
         public async Task<ActionResult> Index()
         {
-            var pies = await _pieApiServices.GetPies();
+            
+            return View(new Pie() { });
+        }
 
-            return View(pies);
+        public async Task<IActionResult> GetAllPies()
+        {
+            return Json(new { data = await _pieRepository.GetAllAsync(ApiDomain.PieAPIPath, HttpContext.Session.GetString("JWToken")) });
         }
 
 
@@ -88,6 +98,14 @@ namespace Products.Client.Controllers
             {
                 return View();
             }
+        }
+
+
+
+        public async Task Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
         }
     }
 }

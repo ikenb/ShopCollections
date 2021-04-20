@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Product.ApiServices
+namespace Products.Client.Services
 {
     public class PieApiService : IPieApiService
     {

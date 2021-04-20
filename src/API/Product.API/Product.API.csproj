@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <Folder Include="Interfaces\Order\" />
+    <Folder Include="Interfaces\Users\" />
   </ItemGroup>
 
 </Project>

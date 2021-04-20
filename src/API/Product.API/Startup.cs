@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.Sqlite;
@@ -12,6 +13,7 @@ using Product.API.Data;
 using Product.API.Interfaces.Repository;
 using Product.API.ProductsMapper;
 using Product.API.Repository;
+using System.Text;
 
 namespace Product.API
 {
@@ -33,7 +35,20 @@ namespace Product.API
 
             services.AddScoped<IPieRepository, PieRepository>();
             services.AddScoped<IPieTypeRepository, PieTypeRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+
             services.AddAutoMapper(typeof(ProductMappings));
+
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+
+            services.Configure<AppSettings>(appSettingsSection);
+
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -51,24 +66,23 @@ namespace Product.API
 
             EnsureDatabaseExists(connection);
 
-            //services.AddDbContext<ProductContext>(options =>
-            // options.UseInMemoryDatabase("ProdutsDb"));
-
-            services.AddAuthentication("Bearer")
-                   .AddJwtBearer("Bearer", options =>
-                   {
-                       options.Authority = "http://localhost:5000";
-                       options.TokenValidationParameters = new TokenValidationParameters
-                       {
-                           ValidateAudience = false
-                       };
-                       options.RequireHttpsMetadata = false;
-                   });
-
-            services.AddAuthorization(options =>
+            services.AddAuthentication(x =>
             {
-                options.AddPolicy("ClientIdPolicy", policy => policy.RequireClaim("client_id", "productClient", "product_mvc_client"));
-            });
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+           .AddJwtBearer(x =>
+           {
+               x.RequireHttpsMetadata = false;
+               x.SaveToken = true;
+               x.TokenValidationParameters = new TokenValidationParameters
+               {
+                   ValidateIssuerSigningKey = true,
+                   IssuerSigningKey = new SymmetricSecurityKey(key),
+                   ValidateIssuer = false,
+                   ValidateAudience = false
+               };
+           });
         }
         private static void EnsureDatabaseExists(SqliteConnection connection)
         {
@@ -89,9 +103,11 @@ namespace Product.API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Product.API v1"));
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
+            app.UseCors(x => x
+              .AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader());
 
             app.UseAuthentication();
             app.UseAuthorization();

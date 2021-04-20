@@ -12,6 +12,10 @@ namespace Product.API.Data
 
         public DbSet<Pie> Pies { get; set; }
         public DbSet<PieType> PieTypes { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderSummary> OrderSummaries { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -20,6 +24,19 @@ namespace Product.API.Data
 
             modelBuilder.Entity<PieType>()
                 .HasMany(p => p.Pies);
+
+            modelBuilder.Entity<OrderSummary>()
+                .HasOne(p => p.Pie);
+
+            modelBuilder.Entity<OrderSummary>()
+                .HasOne(o => o.Order);
+
+            modelBuilder.Entity<ShoppingCartItem>()
+               .HasOne(p => p.Pie);
+
+            modelBuilder.Entity<Order>()
+                .HasMany(s => s.OrderSummaries);
+
 
         }
 
@@ -41,6 +58,24 @@ namespace Product.API.Data
                 new PieType { Id = 2, TypeName = "Cheese" },
                 new PieType { Id = 3, TypeName = "Cream" }
             );
+
+            modelBuilder.Entity<User>().HasData(
+                new User { Id = 1, Username = "tshepiso", Password = "tshepiso" },
+                new User { Id = 2, Username = "user", Password = "user" },
+                new User { Id = 3, Username = "admin", Password = "admin" }
+            );
+
+            modelBuilder.Entity<ShoppingCartItem>().HasData(
+               new ShoppingCartItem { Id = 1 }
+           );
+
+            modelBuilder.Entity<Order>().HasData(
+               new Order { Id = 1 }
+           );
+
+            modelBuilder.Entity<OrderSummary>().HasData(
+               new OrderSummary { Id = 1 }
+           );
         }
 
 

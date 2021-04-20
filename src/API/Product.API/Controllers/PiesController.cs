@@ -10,7 +10,7 @@ namespace Product.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize("ClientIdPolicy")]
+    [Authorize]
     public class PiesController : ControllerBase
     {
 
