@@ -50,8 +50,7 @@ namespace Eshop.Web.Areas.Customer.Controllers
             };
             ShoppingCartVM.OrderHeader.OrderTotal = 0;
             ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser
-                                                        .GetFirstOrDefault(u => u.Id == claim.Value,
-                                                        includeProperties: "Company");
+                                                        .GetFirstOrDefault(u => u.Id == claim.Value);
 
             foreach (var list in ShoppingCartVM.ListCart)
             {
@@ -157,8 +156,7 @@ namespace Eshop.Web.Areas.Customer.Controllers
             };
 
             ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser
-                                                            .GetFirstOrDefault(c => c.Id == claim.Value,
-                                                                includeProperties: "Company");
+                                                            .GetFirstOrDefault(c => c.Id == claim.Value);
 
             foreach (var list in ShoppingCartVM.ListCart)
             {
@@ -183,8 +181,7 @@ namespace Eshop.Web.Areas.Customer.Controllers
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser
-                                                            .GetFirstOrDefault(c => c.Id == claim.Value,
-                                                                    includeProperties: "Company");
+                                                            .GetFirstOrDefault(c => c.Id == claim.Value);
 
             ShoppingCartVM.ListCart = _unitOfWork.ShoppingCart
                                         .GetAll(c => c.ApplicationUserId == claim.Value,

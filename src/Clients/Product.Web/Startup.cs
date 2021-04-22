@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Stripe;
 using System;
+using System.Globalization;
 
 namespace Eshop.Web
 {
@@ -38,10 +38,10 @@ namespace Eshop.Web
             services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
 
             services.Configure<EmailOptions>(Configuration);
-            
 
 
-         
+
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IDbInitializer, DbInitializer>();
@@ -90,7 +90,7 @@ namespace Eshop.Web
             app.UseStaticFiles();
 
             app.UseRouting();
-           
+
             app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -103,6 +103,11 @@ namespace Eshop.Web
                 endpoints.MapRazorPages();
             });
 
+            var cultureInfo = new CultureInfo("en-ZA");
+            cultureInfo.NumberFormat.CurrencySymbol = "R";
+
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
             // CreateAdminUser();
         }
