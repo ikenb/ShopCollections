@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using PieShop.MvcClient.Models;
-using System;
-using System.Collections.Generic;
+using PieShop.Core.Models.ViewModels;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PieShop.MvcClient.Controllers
 {

@@ -1,6 +1,4 @@
-using System;
-
-namespace PieShop.MvcClient.Models
+﻿namespace PieShop.Core.Models.ViewModels
 {
     public class ErrorViewModel
     {

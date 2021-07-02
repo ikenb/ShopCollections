@@ -2,7 +2,7 @@
 
 namespace PieShop.Data
 {
-    public class Class1
+    public class ApplicationDbContext
     {
     }
 }
