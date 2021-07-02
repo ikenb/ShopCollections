@@ -1,5 +1,5 @@
-# TshepisoShop
-This is my shop where I sell pies
+# eShops Collection
+This is a list of my shops where I sell stuffs
 
 Installation
 Follow these steps to get your development environment set up:
