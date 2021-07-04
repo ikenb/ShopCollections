@@ -1,5 +1,5 @@
 ﻿using PieShop.Core.Models;
-using PieShop.Data.Repository.IRepository;
+using PieShop.Data.Repository.Interfaces;
 using System.Collections.Generic;
 
 namespace PieShop.Data.MockData

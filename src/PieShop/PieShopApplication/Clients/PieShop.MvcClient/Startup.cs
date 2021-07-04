@@ -5,8 +5,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PieShop.Data;
+using PieShop.Data.Helpers;
 using PieShop.Data.Repository;
-using PieShop.Data.Repository.IRepository;
+using PieShop.Data.Repository.Intefaces;
+using PieShop.Data.Repository.Interfaces;
 
 namespace PieShop.MvcClient
 {
@@ -26,6 +28,13 @@ namespace PieShop.MvcClient
 
             services.AddScoped<IPieRepository, PieRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+
+            services.AddScoped(sp => ShoppingCartHelper.GetCart(sp));
+
+            services.AddHttpContextAccessor();
+            services.AddSession();
             services.AddControllersWithViews();
         }
 
@@ -41,7 +50,7 @@ namespace PieShop.MvcClient
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthorization();

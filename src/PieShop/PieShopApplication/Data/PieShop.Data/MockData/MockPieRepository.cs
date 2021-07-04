@@ -1,10 +1,7 @@
 ﻿using PieShop.Core.Models;
-using PieShop.Data.Repository.IRepository;
-using System;
+using PieShop.Data.Repository.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PieShop.Data.MockData
 {

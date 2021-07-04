@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PieShop.Core.Models;
-using PieShop.Data.Repository.IRepository;
+using PieShop.Data.Repository.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 
